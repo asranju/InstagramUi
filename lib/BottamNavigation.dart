@@ -27,11 +27,10 @@ class Bottom extends State<BottomNavigation> {
         home: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-            title: Text("Insagram",
+            title: Text("Instagram",
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.italic,
                     color: Colors.black)),
             actions: <Widget>[
               Badge(

@@ -1,7 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermachinetest/Api/Apicalls.dart';
+import 'package:fluttermachinetest/Helper/CheckConnection.dart';
 import 'package:fluttermachinetest/Models/InstaModel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+//scrollable Image--main
 
 class InstagramScreen extends StatefulWidget {
   Instagram createState() => Instagram();
@@ -50,7 +55,8 @@ class Instagram extends State<InstagramScreen> {
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
                                             image: NetworkImage(
-                                                'https://googleflutter.com/sample_image.jpg'),
+                                                instaModel[index]
+                                                    .mediumThumbnail),
                                             fit: BoxFit.fill),
                                       ))),
                               Expanded(
@@ -72,8 +78,47 @@ class Instagram extends State<InstagramScreen> {
                             ])),
                         Container(
                             height: MediaQuery.of(context).size.height * .50,
-                            child: Image.network(
-                                'https://googleflutter.com/sample_image.jpg')),
+                            child: CarouselSlider(
+                              options: CarouselOptions(
+                                height:
+                                    MediaQuery.of(context).size.height * .50,
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                              ),
+                              items: [
+                                instaModel[index].highThumbnail,
+                                instaModel[index].highThumbnail,
+                                instaModel[index].highThumbnail
+                              ].map((i) {
+                                return Builder(
+                                  builder: (BuildContext context) {
+                                    return Container(
+                                        width: double.infinity,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 5.0),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0)),
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                          ),
+                                          elevation: 0,
+                                          child: Container(
+                                              width: double.infinity,
+                                              child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    Image.network(
+                                                      i,
+                                                    ),
+                                                  ])),
+                                        ));
+                                  },
+                                );
+                              }).toList(),
+                            )),
                         Container(
                             margin: const EdgeInsets.only(
                                 left: 5, right: 5, top: 0),
@@ -137,7 +182,7 @@ class Instagram extends State<InstagramScreen> {
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
                                             image: NetworkImage(
-                                                'https://googleflutter.com/sample_image.jpg'),
+                                                instaModel[index].lowThumbnail),
                                             fit: BoxFit.fill),
                                       ))),
                               Expanded(
@@ -182,7 +227,22 @@ class Instagram extends State<InstagramScreen> {
   @override
   void initState() {
     super.initState();
-
-    getData();
+    NetWorkCheck.checknetWorkStatus().then((connectivityStatus) => {
+          if (connectivityStatus)
+            {
+              getData(),
+            }
+          else
+            {
+              Fluttertoast.showToast(
+                  msg: "Check Network connection",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  fontSize: 16.0),
+            }
+        });
   }
 }
