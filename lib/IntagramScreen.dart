@@ -5,6 +5,7 @@ import 'package:fluttermachinetest/Api/Apicalls.dart';
 import 'package:fluttermachinetest/Helper/CheckConnection.dart';
 import 'package:fluttermachinetest/Models/InstaModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:readmore/readmore.dart';
 
 //scrollable Image--main
 
@@ -62,8 +63,9 @@ class Instagram extends State<InstagramScreen> {
                               Expanded(
                                   flex: 4,
                                   child: Container(
-                                      child:
-                                          Text(instaModel[index].channelname))),
+                                      child: Text(instaModel[index].channelname,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)))),
                               Expanded(
                                   flex: 1,
                                   child: Container(
@@ -219,7 +221,18 @@ class Instagram extends State<InstagramScreen> {
                                 left: 5, right: 5, top: 5),
                             child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(instaModel[index].title)))
+                                child: ReadMoreText(
+                                  instaModel[index].title,
+                                  trimLines: 2,
+                                  colorClickableText: Colors.black,
+                                  trimMode: TrimMode.Line,
+                                  trimCollapsedText: 'More',
+                                  trimExpandedText: 'less',
+                                  moreStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                )))
                       ]);
                     }))));
   }

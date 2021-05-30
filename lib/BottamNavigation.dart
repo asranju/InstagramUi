@@ -12,6 +12,7 @@ class Bottom extends State<BottomNavigation> {
     InstagramScreen(),
     InstagramScreen(),
     InstagramScreen(),
+    InstagramScreen(),
   ];
 
   onTabTapped(int index) {
@@ -67,14 +68,20 @@ class Bottom extends State<BottomNavigation> {
           bottomNavigationBar: BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
-                icon: Icon(Icons.home),
+                icon: Icon(Icons.home, color: Colors.black),
                 label: "",
               ),
-              BottomNavigationBarItem(icon: Icon(Icons.business), label: ""),
-              BottomNavigationBarItem(icon: Icon(Icons.school), label: ""),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.search, color: Colors.black), label: ""),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.library_add, color: Colors.black),
+                  label: ""),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite_border, color: Colors.black),
+                  label: ""),
             ],
             currentIndex: _currentIndex,
-            selectedItemColor: Colors.black,
+            selectedItemColor: Colors.red,
             onTap: onTabTapped,
           ),
         ));
