@@ -222,8 +222,9 @@ class Instagram extends State<InstagramScreen> {
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: ReadMoreText(
-                                  instaModel[index].title,
-                                  trimLines: 2,
+                                  instaModel[index].title + " for added  CHECK MORE in ui ",
+                                  trimLength: 30,
+                                  trimLines: 1,
                                   colorClickableText: Colors.black,
                                   trimMode: TrimMode.Line,
                                   trimCollapsedText: 'More',
