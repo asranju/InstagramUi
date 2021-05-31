@@ -12,8 +12,8 @@ class Bottom extends State<BottomNavigation> {
   final List<Widget> _children = [
     InstagramScreen(),
     InstagramScreen(),
-    BookMarkedItems(),
-    BookMarkedItems(),
+    InstagramScreen(),
+    InstagramScreen(),
   ];
 
   onTabTapped(int index) {
