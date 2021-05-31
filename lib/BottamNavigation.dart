@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttermachinetest/BookMarkedItems.dart';
 import 'package:fluttermachinetest/IntagramScreen.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -11,8 +12,8 @@ class Bottom extends State<BottomNavigation> {
   final List<Widget> _children = [
     InstagramScreen(),
     InstagramScreen(),
-    InstagramScreen(),
-    InstagramScreen(),
+    BookMarkedItems(),
+    BookMarkedItems(),
   ];
 
   onTabTapped(int index) {
@@ -35,8 +36,8 @@ class Bottom extends State<BottomNavigation> {
                     color: Colors.black)),
             actions: <Widget>[
               Badge(
-                  position: BadgePosition.topEnd(top: 5, end: 3),
-                  badgeContent: Text('10',
+                  position: BadgePosition.topEnd(top: 4, end: 3),
+                  badgeContent: Text('1',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -48,7 +49,13 @@ class Bottom extends State<BottomNavigation> {
                       color: Colors.black,
                       size: 35,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BookMarkedItems()));
+                      // BookMarkedItems
+                    },
                   ))
             ],
             leading: Builder(
@@ -85,5 +92,10 @@ class Bottom extends State<BottomNavigation> {
             onTap: onTabTapped,
           ),
         ));
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 }

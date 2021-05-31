@@ -1,10 +1,12 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermachinetest/Api/Apicalls.dart';
 import 'package:fluttermachinetest/Helper/CheckConnection.dart';
+import 'package:fluttermachinetest/Helper/DatabaseHelper.dart';
 import 'package:fluttermachinetest/Models/InstaModel.dart';
+import 'package:fluttermachinetest/Models/TableModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:readmore/readmore.dart';
 
 //scrollable Image--main
@@ -14,7 +16,19 @@ class InstagramScreen extends StatefulWidget {
 }
 
 class Instagram extends State<InstagramScreen> {
+  late DatabaseHandler handler;
   List<InstaModel> instaModel = [];
+
+  delete(String userId) {
+    handler.deleteUser(userId);
+  }
+
+  addData(InstaModel addList) {
+    TableModel data = TableModel(addList.id, addList.channelname, addList.title,
+        addList.highThumbnail, addList.mediumThumbnail, addList.lowThumbnail);
+    List<TableModel> listOfUsers = [data];
+    handler.insertUser(listOfUsers);
+  }
 
   getData() {
     Apicalls.getUserdata().then((value) => {
@@ -80,47 +94,8 @@ class Instagram extends State<InstagramScreen> {
                             ])),
                         Container(
                             height: MediaQuery.of(context).size.height * .50,
-                            child: CarouselSlider(
-                              options: CarouselOptions(
-                                height:
-                                    MediaQuery.of(context).size.height * .50,
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                              ),
-                              items: [
-                                instaModel[index].highThumbnail,
-                                instaModel[index].highThumbnail,
-                                instaModel[index].highThumbnail
-                              ].map((i) {
-                                return Builder(
-                                  builder: (BuildContext context) {
-                                    return Container(
-                                        width: double.infinity,
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 5.0),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0)),
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                          ),
-                                          elevation: 0,
-                                          child: Container(
-                                              width: double.infinity,
-                                              child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    Image.network(
-                                                      i,
-                                                    ),
-                                                  ])),
-                                        ));
-                                  },
-                                );
-                              }).toList(),
-                            )),
+                            child:
+                                Image.network(instaModel[index].highThumbnail)),
                         Container(
                             margin: const EdgeInsets.only(
                                 left: 5, right: 5, top: 0),
@@ -159,16 +134,37 @@ class Instagram extends State<InstagramScreen> {
                                       onPressed: () {},
                                     )),
                                 Expanded(flex: 3, child: Container()),
-                                Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      icon: Icon(
-                                        Icons.save_alt_sharp,
-                                        color: Colors.black,
-                                        size: 30,
-                                      ),
-                                      onPressed: () {},
-                                    ))
+                                instaModel[index].bmark
+                                    ? Expanded(
+                                        flex: 1,
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.bookmark,
+                                            color: Colors.black,
+                                            size: 30,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              instaModel[index].bmark = false;
+                                            });
+                                            delete(instaModel[index].id);
+                                          },
+                                        ))
+                                    : Expanded(
+                                        flex: 1,
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.bookmark_border,
+                                            color: Colors.black,
+                                            size: 30,
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              instaModel[index].bmark = true;
+                                            });
+                                            addData(instaModel[index]);
+                                          },
+                                        )),
                               ],
                             )),
                         Container(
@@ -218,11 +214,12 @@ class Instagram extends State<InstagramScreen> {
                             ])),
                         Container(
                             margin: const EdgeInsets.only(
-                                left: 5, right: 5, top: 5),
+                                left: 40, right: 5, top: 5),
                             child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: ReadMoreText(
-                                  instaModel[index].title + " for added  CHECK MORE in ui ",
+                                  instaModel[index].title,
+                                  style: TextStyle(color: Colors.black),
                                   trimLength: 30,
                                   trimLines: 1,
                                   colorClickableText: Colors.black,
@@ -230,6 +227,10 @@ class Instagram extends State<InstagramScreen> {
                                   trimCollapsedText: 'More',
                                   trimExpandedText: 'less',
                                   moreStyle: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red),
+                                  lessStyle: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.red),
@@ -241,6 +242,10 @@ class Instagram extends State<InstagramScreen> {
   @override
   void initState() {
     super.initState();
+
+    this.handler = DatabaseHandler();
+    this.handler.initializeDB().whenComplete(() async {});
+
     NetWorkCheck.checknetWorkStatus().then((connectivityStatus) => {
           if (connectivityStatus)
             {

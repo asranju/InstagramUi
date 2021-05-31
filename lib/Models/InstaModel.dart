@@ -5,10 +5,18 @@ class InstaModel {
   String _highThumbnail = "";
   String _lowThumbnail = "";
   String _mediumThumbnail = "";
+  bool _bmark = false;
   List<Null> _tags = [];
 
-  InstaModel(String id, String channelname, String title, String highThumbnail,
-      String lowThumbnail, String mediumThumbnail, List<Null> tags) {
+  InstaModel(
+      String id,
+      String channelname,
+      String title,
+      String highThumbnail,
+      String lowThumbnail,
+      String mediumThumbnail,
+      List<Null> tags,
+      bool bmark) {
     this._id = id;
     this._channelname = channelname;
     this._title = title;
@@ -16,8 +24,11 @@ class InstaModel {
     this._lowThumbnail = lowThumbnail;
     this._mediumThumbnail = mediumThumbnail;
     this._tags = tags;
+    this._bmark = bmark;
   }
 
+  bool get bmark => _bmark;
+  set bmark(bool bmark) => _bmark = bmark;
   String get id => _id;
   set id(String id) => _id = id;
   String get channelname => _channelname;
