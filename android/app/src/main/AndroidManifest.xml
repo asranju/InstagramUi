@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.riafy.fluttermachinetest">
    <application
-   
+     android:useCleartextTraffic="true"
         android:label="fluttermachinetest"
         android:icon="@mipmap/ic_launcher">
         <activity
-        android:useCleartextTraffic="true"
+     
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
